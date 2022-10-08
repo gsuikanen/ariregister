@@ -1,8 +1,12 @@
 import flask
 from flask import request, jsonify
+import app_db
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
+app.config["DATABASE"] = 'database.db'
+
+print(app)
 
 #Test data
 companies = [
@@ -41,11 +45,9 @@ companies = [
      ]},
 ]
 
-
 @app.route('/', methods=['GET'])
 def home():
-    return '''<h1>API service for Äriregister project</h1>
-<p>This is a boilerplate code for Flask API service</p>'''
+    return 'API service for Äriregister project'
 
 @app.route('/api/v1/company/all', methods=['GET'])
 def all_companies():
@@ -59,11 +61,15 @@ def get_company():
         results = []
     else:
         return "Error: No id field provided. Please specify an id."
-
     for comp in companies:
         if comp['id'] == id:
             results.append(comp)
+    return jsonify(results)
 
+@app.route('/api/v1/list/<list_name>', methods=['GET'])
+def get_list(list_name):
+    print(list_name)
+    results = app_db.getList(app.config["DATABASE"], list_name)
     return jsonify(results)
     
 app.run()
