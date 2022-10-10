@@ -1,3 +1,4 @@
+from unicodedata import name
 import flask
 from flask import request, jsonify
 import app_db
@@ -6,64 +7,42 @@ app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 app.config["DATABASE"] = 'database.db'
 
-print(app)
-
-#Test data
-companies = [
-    {'id': 1,
-     'name': 'MEES JA KOER OÜ',
-     'code': '12117629',
-     'reg_dt': '08.06.2011',
-     'owners': [
-        {'name': 'Andre',
-         'surname': 'Esna',
-         'type': 'priv',
-         'code': '3800308****',
-         'role': 'founder',
-         'amount': 2500
-        },
-     ]},
-     {'id': 2,
-     'name': 'MEES JA KASS OÜ',
-     'code': '14013242',
-     'reg_dt': '14.03.2016',
-     'owners': [
-        {'name': 'Veiko',
-         'surname': 'Vostrjakov',
-         'type': 'priv',
-         'code': '3750207****',
-         'role': 'founder',
-         'amount': 1500
-        },
-        {'name': 'Martin',
-         'surname': 'Vostrjakov',
-         'type': 'priv',
-         'code': '3780207***',
-         'role': 'owner',
-         'amount': 1000
-        },
-     ]},
-]
-
 @app.route('/', methods=['GET'])
 def home():
-    return 'API service for Äriregister project'
-
-@app.route('/api/v1/company/all', methods=['GET'])
-def all_companies():
-    return jsonify(companies)
-
+    res = {'OK': 'API service for Äriregister project'}
+    return jsonify(res)
 
 @app.route('/api/v1/company', methods=['GET'])
 def get_company():
     if 'id' in request.args:
         id = int(request.args['id'])
-        results = []
     else:
-        return "Error: No id field provided. Please specify an id."
-    for comp in companies:
-        if comp['id'] == id:
-            results.append(comp)
+        res = {'ERROR': 'No id field provided'}
+        return jsonify(res)
+    results = app_db.getCompanyBasicData(app.config["DATABASE"], id)
+    return jsonify(results)
+
+@app.route('/api/v1/searchCompany', methods=['GET'])
+def search_company():
+    if 'searchstring' in request.args:
+        str = request.args['searchstring']
+        if len(str) < 4:
+            res = {'ERROR': 'Searchstring should be at least 4 symbols long'}
+            return jsonify(res)
+    else:
+        res = {'ERROR': 'No searchstring field provided'}
+        return jsonify(res)
+    results = app_db.getSearchedCompanies(app.config["DATABASE"], str)
+    return jsonify(results)
+
+@app.route('/api/v1/companyOwners', methods=['GET'])
+def get_owners():
+    if 'id' in request.args:
+        id = int(request.args['id'])
+    else:
+        res = {'ERROR': 'No id field provided'}
+        return jsonify(res)
+    results = app_db.getCompanyOwners(app.config["DATABASE"], id)
     return jsonify(results)
 
 @app.route('/api/v1/list/<list_name>', methods=['GET'])
