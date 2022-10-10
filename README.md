@@ -30,3 +30,5 @@ Instructions on how to run the project
 ### Time report
 2022-10-06: 2h - initial repo and boilerplate code setup, DB structure
 2022-10-08: 3h - creating DB and prepopulating it with lists, API for lists
+2022-10-09: 2h - working on GET service for API
+2022-10-10: 3h - GET service API + unit testing
