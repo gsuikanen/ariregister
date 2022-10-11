@@ -1,0 +1,13 @@
+#main{
+    display: table;
+    text-align: center;
+}
+
+.search {
+    margin-top: 5rem;
+}
+
+h1 {
+    margin-top: 10rem;
+    margin-bottom: 5rem;
+}
