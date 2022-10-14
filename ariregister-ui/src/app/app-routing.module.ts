@@ -8,7 +8,7 @@ import { Err404Component } from './err404/err404.component';
 const routes: Routes = [
   {path: '', component: CompanySearchComponent},
   {path: 'add-company', component: CompanyAddComponent},
-  {path: 'company-details', component: CompanyDetailsComponent},
+  {path: 'company-details/:id', component: CompanyDetailsComponent},
   {path: '**', component: Err404Component},
 ];
 

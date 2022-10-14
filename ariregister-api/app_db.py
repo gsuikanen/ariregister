@@ -22,7 +22,7 @@ def getCompanyBasicData(db, id):
     resp = list[0]
     print(resp)
     cur.connection.close()
-    return resp if type(resp['name']) == "str" else {'ERROR': 'Company with id {0} not found'.format(id)}
+    return resp if type(resp['name']) == str else {'ERROR': 'Company with id {0} not found'.format(id)}
 
 def getSearchedCompanies(db, str):
     conn = sqlite3.connect(db)

@@ -1,9 +1,11 @@
 from unicodedata import name
 import flask
 from flask import request, jsonify
+from flask_cors import CORS
 import app_db
 
 app = flask.Flask(__name__)
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 app.config["DEBUG"] = True
 app.config["DATABASE"] = 'database.db'
 

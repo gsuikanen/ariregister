@@ -5,9 +5,53 @@
 
 .search {
     margin-top: 5rem;
+    margin-bottom: 2rem;
 }
 
 h1 {
     margin-top: 10rem;
     margin-bottom: 5rem;
+}
+
+ul {
+    list-style-type: none; 
+    margin-bottom: 1rem;
+    text-align: justify;
+}
+
+li {
+  cursor: pointer;
+}
+
+.arrow-right {
+  margin-left: 1rem;
+}
+
+.info-msg,
+.success-msg,
+.warning-msg,
+.error-msg {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 3px 3px 3px 3px;
+}
+
+.info-msg {
+  color: #059;
+  background-color: #BEF;
+}
+
+.success-msg {
+  color: #270;
+  background-color: #DFF2BF;
+}
+
+.warning-msg {
+  color: #9F6000;
+  background-color: #FEEFB3;
+}
+
+.error-msg {
+  color: #D8000C;
+  background-color: #FFBABA;
 }

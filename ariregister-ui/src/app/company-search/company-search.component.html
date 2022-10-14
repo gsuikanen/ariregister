@@ -3,10 +3,27 @@
     <p>Start by typing company name or company owner name to the search bar</p>
     <p>Also, you can add new company in menu above</p>
     <div class="input-group rounded search">
-        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-            aria-describedby="search-addon" />
-        <span class="input-group-text border-0" id="search-addon">
+        <input id="search" type="search" name="searchstring" class="form-control rounded" placeholder="Search"
+            aria-label="Search" aria-describedby="search-addon" (keydown.enter)="enterPressed($event)" #search />
+        <span class="input-group-text border-0" id="search-addon" (click)="getCompanyHints(search.value)">
             <fa-icon [icon]="searchIcon"></fa-icon>
         </span>
     </div>
+
+    <div class="warning-msg" *ngIf="companies.ERROR">
+        <fa-icon [icon]="warningIcon"></fa-icon>
+        {{ companies.ERROR }}
+    </div>
+
+    <div class="list" *ngIf="companies && !companies.ERROR">
+        <ul>
+            <li *ngFor="let company of companies | paginate: { itemsPerPage: 10, currentPage: p }" [routerLink]="['/company-details', company.id]">
+                {{ company.name }}
+                <span *ngIf="company.owner != ''"> - {{ company.owner }}</span>
+                <fa-icon class="arrow-right" [icon]="arrowIcon"></fa-icon>
+            </li>
+        </ul>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+
 </div>
