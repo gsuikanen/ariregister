@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { Err404Component } from './err404/err404.component';
 import { FooterComponent } from './footer/footer.component';
+import { ListPipe } from './services/ariregister-pipe.pipe';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { FooterComponent } from './footer/footer.component';
     routingComponents,
     Err404Component,
     FooterComponent,
+    ListPipe,
   ],
   imports: [
     BrowserModule,

@@ -51,4 +51,4 @@ def getCompanyOwners(db, id):
         WHERE r.company_id = {0}'''.format(id))
     list = [dict((cur.description[i][0], value) for i, value in enumerate(row)) for row in cur.fetchall()]
     cur.connection.close()
-    return list if len(list) > 0 else {'ERROR': 'Company with id {0} not found'.format(id)}
+    return list if len(list) > 0 else {'ERROR': 'No owners found for company with id {0}'.format(id)}
