@@ -1,1 +1,97 @@
-<p>company-add works!</p>
+<div id="main">
+    <h1>Add new company</h1>
+    <form [formGroup]="AddCompanyForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="company-name">Company name</label>
+            <input type="text" id="company-name" class="form-control" placeholder="Example OÜ"
+                formControlName="companyName">
+            <small class="validation-error" *ngIf="companyName.invalid && companyName.touched">Company name is required</small>
+        </div>
+        <div class="form-group">
+            <label for="company-code">Company registration code</label>
+            <input type="text" id="company-code" class="form-control" placeholder="1234567"
+                formControlName="companyCode">
+            <small class="validation-error" *ngIf="companyCode.invalid && companyCode.touched">Company code should consist of 7 digits</small>
+        </div>
+        <div class="form-group">
+            <label for="company-regdt">Company registration date</label>
+            <input type="date" id="company-regdt" class="form-control" formControlName="companyRegdt">
+        </div>
+        <div class="form-group">
+            <label for="capital">Capital</label>
+            <input type="number" id="capital" class="form-control" disabled>
+            <small id="capitalHelp" class="form-text text-muted">Сalculated automatically - please add owners</small>
+        </div>
+
+        <h3>Company owners</h3>
+        <small class="validation-error" *ngIf="owners.invalid">Please fill in all fields for every owner. Capital should be at least 1 eur</small>
+        <div formArrayName="owners">
+            <div *ngFor="let owner of owners.controls; let i=index">
+                <div [formGroupName]="i">
+                    <div class="form-group row">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="owner-type">Owner type</label>
+                                <select id="owner-type" class="form-select" formControlName="ownerType">
+                                    <option value="priv">Private</option>
+                                    <option value="bus">Business</option>
+                                </select>
+                            </div>
+                            <div class="col-6 align-right">
+                                <button class="btn btn-danger" (click)="deleteOwner(i)">Remove</button>
+                            </div> 
+                        </div>
+                        <div *ngIf="getOwnerType(i) == 'priv'">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="owner-name">First name</label>
+                                    <input type="text" id="owner-name" class="form-control" formControlName="ownerName">
+                                </div>
+                                <div class="col-6">
+                                    <label for="owner-surname">Surname</label>
+                                    <input type="text" id="owner-surname" class="form-control" formControlName="ownerSurname">
+                                </div>
+                            </div>
+                            
+                            <label for="owner-code">ID Code</label>
+                            <input type="text" id="owner-code" class="form-control" formControlName="ownerCode">
+                            <label for="owner-capital">Capital allocated</label>
+                            <input type="number" id="owner-capital" class="form-control" formControlName="ownerCapital">
+                        </div>
+                        <div *ngIf="getOwnerType(i) == 'bus'">
+                            <label for="owner-name">Company name</label>
+                            <input type="text" id="owner-name" class="form-control" formControlName="ownerName">
+                            <label for="owner-code">Registration Code</label>
+                            <input type="text" id="owner-code" class="form-control" formControlName="ownerCode">
+                            <label for="owner-capital">Capital allocated</label>
+                            <input type="number" id="owner-capital" class="form-control" formControlName="ownerCapital">
+                        </div>
+                    </div>
+                    <div class="warning-msg" *ngIf="apiResponse && apiResponse.i">
+                        <fa-icon [icon]="warningIcon"></fa-icon>
+                        <pre>{{ apiResponse.i }}</pre>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button class="btn btn-primary margin-top" type="button" (click)="addOwner()">Add owner</button>
+            </div>
+        </div>
+
+        <div class="warning-msg" *ngIf="apiResponse && apiResponse.ERROR">
+            <fa-icon [icon]="warningIcon"></fa-icon>
+            <pre>{{ apiResponse.ERROR }}</pre>
+        </div>
+
+        <div class="success-msg" *ngIf="apiResponse && apiResponse.company_id"
+            [routerLink]="['/company-details', apiResponse.company_id]">
+            <fa-icon [icon]="successIcon"></fa-icon>
+            Company successfully created, click to see details
+        </div>
+
+        <div class="align-right">
+            <button class="btn btn-primary margin-top" type="submit" [disabled]="!AddCompanyForm.valid">Submit</button>
+        </div>
+    </form>
+    
+</div>

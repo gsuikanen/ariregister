@@ -46,3 +46,7 @@ npm run
 2022-10-12: 1h - some progress with UI home page
 
 2022-10-14: 2h - fetching data from API and displaying it in UI
+
+2022-10-15: 4h - form for adding new company (UI)
+
+2022-10-16: 6h - finishing form for new company and working on POST (API)

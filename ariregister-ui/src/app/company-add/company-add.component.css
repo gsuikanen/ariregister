@@ -1,0 +1,65 @@
+h1 {
+    margin-top: 10rem;
+}
+
+h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+label {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+form {
+    width: 600px;
+}
+
+.delete-owner {
+    float: right;
+
+}
+
+.margin-top {
+    margin-top: 1rem
+}
+
+.align-right {
+    display: flex;
+    justify-content: right;
+    align-items:flex-end;
+}
+
+.validation-error {
+    color: #ff3333
+}
+
+.info-msg,
+.success-msg,
+.warning-msg,
+.error-msg {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 3px 3px 3px 3px;
+}
+
+.info-msg {
+  color: #059;
+  background-color: #BEF;
+}
+
+.success-msg {
+  color: #270;
+  background-color: #DFF2BF;
+}
+
+.warning-msg {
+  color: #9F6000;
+  background-color: #FEEFB3;
+}
+
+.error-msg {
+  color: #D8000C;
+  background-color: #FFBABA;
+}

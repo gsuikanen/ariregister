@@ -3,6 +3,7 @@ import flask
 from flask import request, jsonify
 from flask_cors import CORS
 import app_db
+from validators import validateCompanyData, validateOwners
 
 app = flask.Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -23,6 +24,31 @@ def get_company():
         return jsonify(res)
     results = app_db.getCompanyBasicData(app.config["DATABASE"], id)
     return jsonify(results)
+
+@app.route('/api/v1/company', methods=['POST'])
+def add_company():
+    data =  request.get_json()
+    print(data)
+    #Validating data
+    validation_res = validateCompanyData(data)
+    if validation_res != '':
+        res = {'ERROR': validation_res}
+        return jsonify(res)
+    if app_db.getCompanyMatches(app.config["DATABASE"], data['companyCode'], data['companyName']):
+        res = {'ERROR': 'Duplicating company\nCheck that company name and registration code are unique'}
+        return jsonify(res)
+    owners = data['owners']
+    validation_res = validateOwners(owners)
+    if len(validation_res) > 0:
+        return jsonify(validation_res)
+    #Saving data to DB
+    company_id = app_db.addCompany(app.config["DATABASE"], data['companyName'], data['companyCode'], data['companyRegdt'])
+    for own in owners:
+        if own['ownerType'] == 'bus':
+            own['ownerSurname'] = ''
+        app_db.addCompanyOwner(app.config["DATABASE"], company_id, own['ownerName'], own['ownerSurname'], own['ownerType'], own['ownerCode'], 'found', own['ownerCapital'])
+    res = {'company_id': company_id}
+    return jsonify(res)
 
 @app.route('/api/v1/searchCompany', methods=['GET'])
 def search_company():

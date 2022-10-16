@@ -1,11 +1,11 @@
 <div id="main">
     <h1>Company data</h1>
     <h3>Basic information</h3>
-    <div class="warning-msg" *ngIf="companyData.ERROR">
+    <div class="warning-msg" *ngIf="companyData && companyData.ERROR">
         <fa-icon [icon]="warningIcon"></fa-icon>
         {{ companyData.ERROR }}
     </div>
-    <div *ngIf="companyData.name">
+    <div *ngIf="companyData && companyData.name">
         <table class="table">
             <tbody>
                 <tr>
@@ -34,7 +34,7 @@
 
 
     <h3>Company owners</h3>
-    <div class="warning-msg" *ngIf="companyOwners.ERROR">
+    <div class="warning-msg" *ngIf="companyOwners && companyOwners.ERROR">
         <fa-icon [icon]="warningIcon"></fa-icon>
         {{ companyOwners.ERROR }}
     </div>

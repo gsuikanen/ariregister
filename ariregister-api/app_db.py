@@ -20,7 +20,6 @@ def getCompanyBasicData(db, id):
         WHERE c.id = {0}'''.format(id))
     list = [dict((cur.description[i][0], value) for i, value in enumerate(row)) for row in cur.fetchall()]
     resp = list[0]
-    print(resp)
     cur.connection.close()
     return resp if type(resp['name']) == str else {'ERROR': 'Company with id {0} not found'.format(id)}
 
@@ -52,3 +51,61 @@ def getCompanyOwners(db, id):
     list = [dict((cur.description[i][0], value) for i, value in enumerate(row)) for row in cur.fetchall()]
     cur.connection.close()
     return list if len(list) > 0 else {'ERROR': 'No owners found for company with id {0}'.format(id)}
+
+def getCompanyMatches(db, reg, name):
+    conn = sqlite3.connect(db)
+    cur = conn.cursor()
+    cur.execute('''
+        SELECT c.name, c.code
+        FROM company c
+        WHERE c.code = '{0}' OR lower(c.name) = lower('{1}') '''.format(reg, name))
+    list = [dict((cur.description[i][0], value) for i, value in enumerate(row)) for row in cur.fetchall()]
+    cur.connection.close()
+    return len(list) > 0
+
+def addCompany(db, name, code, regdt):
+    conn = sqlite3.connect(db)
+    cur = conn.cursor()
+    cur.execute('''
+        INSERT INTO company (name, code, reg_dt)
+        VALUES ('{0}', '{1}', '{2}')'''.format(name, code, regdt))
+    i = cur.lastrowid
+    cur.connection.commit()
+    cur.connection.close()
+    return i
+
+def addCompanyOwner(db, comp_id, name, surname, type, code, role, amount):
+    own_id = getOwnerId(db, name, surname, type, code)
+    if own_id == 0:
+        own_id = addOwner(db, name, surname, type, code)
+    conn = sqlite3.connect(db)
+    cur = conn.cursor()
+    cur.execute('''
+        INSERT INTO relation (company_id, owner_id, role, amount)
+        VALUES ('{0}', '{1}', '{2}', {3})'''.format(comp_id, own_id, role, amount))
+    cur.connection.commit()
+    cur.connection.close()
+
+def getOwnerId(db, name, surname, type, code):
+    i = 0
+    conn = sqlite3.connect(db)
+    cur = conn.cursor()
+    cur.execute('''
+        SELECT id
+        FROM owner
+        WHERE lower(name) = lower('{0}') AND lower(surname) = lower('{1}') and type = '{2}' and code = '{3}' '''.format(name, surname, type, code))
+    for row in cur:
+        i = row[0]
+    cur.connection.close()
+    return i
+
+def addOwner(db, name, surname, type, code):
+    conn = sqlite3.connect(db)
+    cur = conn.cursor()
+    cur.execute('''
+        INSERT INTO owner (name, surname, type, code)
+        VALUES ('{0}', '{1}', '{2}', '{3}')'''.format(name, surname, type, code))
+    i = cur.lastrowid
+    cur.connection.commit()
+    cur.connection.close()
+    return i

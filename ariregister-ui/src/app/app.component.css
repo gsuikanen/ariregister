@@ -2,4 +2,10 @@
     font-family: 'Open Sans', sans-serif;
     color: #222222;
     margin-bottom: 5rem;
+    margin-top: 5rem;
+}
+
+pre {
+    font-family: 'Open Sans', sans-serif;
+    color: #222222;
 }

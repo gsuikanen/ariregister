@@ -10,7 +10,7 @@
         </span>
     </div>
 
-    <div class="warning-msg" *ngIf="companies.ERROR">
+    <div class="warning-msg" *ngIf="companies && companies.ERROR">
         <fa-icon [icon]="warningIcon"></fa-icon>
         {{ companies.ERROR }}
     </div>

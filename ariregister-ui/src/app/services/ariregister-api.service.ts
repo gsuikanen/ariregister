@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { retry } from 'rxjs';
 import { ApiEndpoints } from '../api/ariregister-api';
-import { FormsModule }   from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +32,12 @@ export class AriregisterApiService {
     let params = new HttpParams().set('id', id);
     return this.http.get<any>(ApiEndpoints.BASE_URL + ApiEndpoints.GET_COMPANY_OWNERS, {params})
     .pipe(retry({count: 3, delay: 500}))
+  }
+
+  postCompanyData(data: any) {
+    var body = JSON.stringify(data);
+    var headers = new HttpHeaders({'Content-type': 'application/json', 'Data-type': 'json'})
+    return this.http.post<any>(ApiEndpoints.BASE_URL + ApiEndpoints.POST_COMPANY_DATA, body, {headers: headers})
   }
 }
 
