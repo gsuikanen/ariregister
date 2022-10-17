@@ -71,20 +71,14 @@ export class CompanyAddComponent implements OnInit {
     return this.owners.value.at(i).ownerType
   }
 
-  getTotalCapital(): number {
-    let cap = 0;
-    //let len = this.owners.value.len();
-    // for (let i = 0; i <= len; i++) {
-    //   cap += this.owners.value.at(i).ownerCapital;
-    // }
-    return cap;
-  }
-
   onSubmit() {
     console.log(this.AddCompanyForm.value);
     this.Api.postCompanyData(this.AddCompanyForm.value).subscribe((res: any) => {
       console.log(res);
       this.apiResponse = res;
+      if (this.apiResponse.company_id > 0) {
+        this.AddCompanyForm.reset(this.AddCompanyForm.value);
+      }
     })
   }
 
