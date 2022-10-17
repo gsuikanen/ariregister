@@ -35,6 +35,10 @@ form {
     color: #ff3333
 }
 
+#capital {
+  pointer-events: none;
+}
+
 .info-msg,
 .success-msg,
 .warning-msg,
